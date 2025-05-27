@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-Time Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #chat-box { border: 1px solid #ccc; height: 300px; overflow-y: scroll; margin-bottom: 10px; padding: 10px; }
+        #chat-box div { margin: 5px 0; }
+    </style>
+</head>
+<body>
+<h2>Chat Room: <span id="room">room1</span></h2>
+<div id="chat-box"></div>
+<input type="text" id="sender" placeholder="Your name" />
+<input type="text" id="message" placeholder="Type a message..." />
+<button onclick="sendMessage()">Send</button>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
