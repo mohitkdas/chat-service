@@ -40,11 +40,11 @@ jobs:
       # Step 6: Transfer the latest JAR to EC2
       - name: Transfer JAR to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa target/${{ env.JAR_NAME}} ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST_CHAT_APP }}:/home/${{ secrets.AWS_USER }}/
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa target/${{ env.JAR_NAME}} ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }}:/home/${{ secrets.AWS_USER }}/
       # Step 7: Restart the application on EC2
       - name: Restart Application on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST_CHAT_APP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.AWS_USER }}@${{ secrets.AWS_HOST }} << 'EOF'
           pkill -f 'java -jar' || true
           nohup java -jar /home/${{ secrets.AWS_USER }}/${{ env.JAR_NAME }} > app.log 2>&1 &
           EOF
