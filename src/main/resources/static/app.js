@@ -1,5 +1,7 @@
 let stompClient = null;
-const roomId = "room1";
+const urlParams = new URLSearchParams(window.location.search);
+const roomId = urlParams.get('roomId');
+document.getElementById("room").textContent = roomId;
 const chatBox = document.getElementById("chat-box");
 
 function connect() {

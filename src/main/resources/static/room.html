@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            padding: 15px;
+            background-color: #0066ff;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        #chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: scroll;
+            background-color: #fff;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #chat-box div {
+            margin-bottom: 10px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: #f9f9f9;
+        }
+
+        .chat-input input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            background-color: #0066ff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #004ccc;
+        }
+    </style>
+</head>
+<body>
+<header>
+    Chat Room: <span id="room">...</span>
+</header>
+<div id="chat-box"></div>
+<div class="chat-input">
+    <input type="text" id="sender" placeholder="Your name" />
+    <input type="text" id="message" placeholder="Type a message..." />
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
