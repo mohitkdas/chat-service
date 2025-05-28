@@ -36,13 +36,15 @@ public class MessageService {
             for (String item : items) {
                 messages.add(objectMapper.readValue(item, ChatMessage.class));
             }
-            log.info("Retrieved messages from Redis cache.");
-            return messages;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (!messages.isEmpty()) {
+                log.info("Retrieved messages from Redis cache.");
+                return messages;
+            }
             log.info("Cache miss. Fetching from DynamoDB.");
             return fetchMessagesFromDynamoDB(roomId);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to fetch messages.", e);
         }
     }
 

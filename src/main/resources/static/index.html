@@ -3,34 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Enter Chat Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --primary: #0066ff;
+            --border: #ddd;
+            --bg: #f9f9f9;
+        }
+
         body {
             font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             height: 100vh;
-            background: #f9f9f9;
+        }
+
+        main {
+            margin: auto;
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
         }
 
         h2 {
             margin-bottom: 20px;
+            color: #333;
         }
 
-        #roomId {
-            padding: 10px;
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
             font-size: 16px;
-            width: 250px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border);
             border-radius: 6px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         button {
-            padding: 10px 20px;
+            width: 100%;
+            padding: 12px;
             font-size: 16px;
-            background-color: #0066ff;
+            background-color: var(--primary);
             color: white;
             border: none;
             border-radius: 6px;
@@ -40,12 +60,24 @@
         button:hover {
             background-color: #004ccc;
         }
+
+        @media (max-width: 400px) {
+            main {
+                padding: 15px;
+            }
+
+            input, button {
+                font-size: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-<h2>Join or Create a Chat Room</h2>
-<input type="text" id="roomId" placeholder="Enter Room ID" />
-<button onclick="goToRoom()">Enter Room</button>
+<main>
+    <h2>Join or Create a Chat Room</h2>
+    <input type="text" id="roomId" placeholder="Enter Room ID" />
+    <button onclick="goToRoom()">Enter Room</button>
+</main>
 
 <script>
     function goToRoom() {

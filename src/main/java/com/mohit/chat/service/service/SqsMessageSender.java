@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SqsMessageSender {
     private final SqsClient sqsClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final String queueUrl = "https://sqs.us-east-1.amazonaws.com/755431179999/chat-message-queue";
+    private final String queueUrl = "https://sqs.us-east-1.amazonaws.com/755431179999/chat-message-queue.fifo";
 
     public void sendToQueue(ChatMessage message) {
         try {
@@ -23,6 +25,8 @@ public class SqsMessageSender {
             SendMessageRequest sendMsgRequest = SendMessageRequest.builder()
                     .queueUrl(queueUrl)
                     .messageBody(json)
+                    .messageGroupId(message.getRoomId())
+                    .messageDeduplicationId(UUID.randomUUID().toString())
                     .build();
             sqsClient.sendMessage(sendMsgRequest);
             log.info("Message sent to SQS: {}", json);
