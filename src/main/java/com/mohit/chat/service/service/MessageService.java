@@ -1,9 +1,10 @@
 package com.mohit.chat.service.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mohit.chat.service.model.ChatMessage;
+import io.lettuce.core.cluster.api.sync.RedisAdvancedClusterCommands;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
@@ -11,30 +12,38 @@ import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
 import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class MessageService {
 
-    @Autowired
-    private RedisTemplate<String, ChatMessage> redisTemplate;
+    private final RedisAdvancedClusterCommands<String, String> redisCommands;
 
-    @Autowired
-    private DynamoDbClient dynamoDbClient;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private final DynamoDbClient dynamoDbClient;
 
     public List<ChatMessage> getRecentMessages(String roomId) {
-        String key = "chat:room:" + roomId;
-        List<ChatMessage> messages = redisTemplate.opsForList().range(key, 0, -1);
+        try {
+            String key = "chat:room:" + roomId;
+            List<String> items = redisCommands.lrange(key, 0, -1);
 
-        if (messages != null && !messages.isEmpty()) {
+            List<ChatMessage> messages = new LinkedList<>();
+            for (String item : items) {
+                messages.add(objectMapper.readValue(item, ChatMessage.class));
+            }
             log.info("Retrieved messages from Redis cache.");
             return messages;
-        }
 
-        log.info("Cache miss. Fetching from DynamoDB.");
-        return fetchMessagesFromDynamoDB(roomId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("Cache miss. Fetching from DynamoDB.");
+            return fetchMessagesFromDynamoDB(roomId);
+        }
     }
 
     private List<ChatMessage> fetchMessagesFromDynamoDB(String roomId) {
