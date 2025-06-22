@@ -39,5 +39,5 @@ jobs:
           docker stop chat-service || true
           docker rm chat-service || true
           docker build -t chat-service .
-          docker run -d --name chat-service --env-file .env -p 8082:8080 chat-service
+          docker run -d --name chat-service --env-file .env --memory="256m" -p 8082:8080 chat-service
           EOF
